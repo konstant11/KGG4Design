@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-Sent Events (SSE) Notifications Receiver</title>
+</head>
+<body>
+
+    <h1>SSE Notifications</h1>
+    <div id="notifications"></div>
+    <script>
+var notifications = document.getElementById('notifications');
+var showNotification = function(data) {
+            var preformatedContainer = document.createElement('pre');
+            preformatedContainer.appendChild(document.createTextNode(data));
+
+            notifications.appendChild(preformatedContainer);
+            notifications.appendChild(document.createElement('hr'));
+};
+@*var showEventContent = function(jdata) {
+            console.log('Got Notification');
+            console.log('Name:'+jdata.name);
+            console.log('Age:'+jdata.age);
+            console.log('City:'+jdata.city);
+            };*@
+var source = new EventSource('/sse-notifications');
+
+source.onmessage = function(event) {
+            try {
+                var the_event = JSON.parse(event.data);
+            }
+            catch (e) {
+                console.log(e);
+            }
+            //showEventContent(the_event);
+            showNotification('Received Event:"' + event.type + '" with content:"' + event.data);
+};
+
+source.addEventListener('alert', function(event) {
+            alert(event.data);
+});</script>
+</body>
+</html>

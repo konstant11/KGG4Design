@@ -1,0 +1,120 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Demo.AspNetCore.ServerSentEvents.Model.SSEventModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "SSE Viewer";
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-Sent Events (SSE) Notifications Receiver</title>
+</head>
+<body>
+    <h3>Example of processing external events in Json notation</h3>
+    <p /> to send external events select Send Event on navigation bar or <a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); "><b><i>Click Here</i></b> </a>
+    <div id="notifications"></div>
+    <div id="event-color-ring" style="visibility:hidden;">
+        <svg height="140" width="140">
+            <ellipse id="call-bubble" cx="70" cy="70" rx="50" ry="50" style="fill:yellow;stroke:purple;stroke-width:2" />
+            Sorry, your browser does not support inline SVG.
+        </svg>
+        <svg height="140" width="180">
+            <ellipse id="call-bubble-mid" cx="70" cy="70" rx="150" ry="10" style="fill: yellow; " />
+            Sorry, your browser does not support inline SVG.
+        </svg>
+
+        <svg height="140" width="140">
+            <ellipse id="call-bubble2" cx="70" cy="70" rx="50" ry="50" style="fill: yellow; stroke: purple; stroke-width: 2" />
+            Sorry, your browser does not support inline SVG.
+        </svg>
+    </div>
+    <div id="cti-event"></div>
+    <script>
+var notifications = document.getElementById('notifications');
+var eventBox = document.getElementById('cti-event');
+var eventBubble = document.getElementById('call-bubble');
+var eventBubble2 = document.getElementById('call-bubble2');
+var eventBubbleMid = document.getElementById('call-bubble-mid');
+var eventBubbleContainer = document.getElementById('event-color-ring');
+var showNotification = function(data) {
+            var preformatedContainer = document.createElement('pre');
+            preformatedContainer.appendChild(document.createTextNode(data));
+
+            notifications.appendChild(document.createElement('hr'));
+            notifications.appendChild(preformatedContainer);
+};
+var showEvent = function(data) {
+            eventBox.innerHTML = "";
+            var the_event = JSON.parse(event.data);
+            eventBubbleContainer.style.visibility="visible";
+            if(the_event.cti_event == 'EventRinging')
+            {
+                eventBubble.style.fill="green";
+                eventBubbleMid.style.fill="red";
+                eventBubble2.style.fill="white";
+            }
+            else
+            if(the_event.cti_event == 'EventEstablished')
+            {
+                eventBubble.style.fill="green";
+                eventBubbleMid.style.fill="grey";
+                eventBubble2.style.fill="green";
+            }
+            else
+            if(the_event.cti_event == 'EventHeld')
+            {
+                eventBubble.style.fill="green";
+                eventBubbleMid.style.fill="red";
+                eventBubble2.style.fill="green";
+            }
+            else
+            if(the_event.cti_event == 'EventReleased')
+            {
+                eventBubble.style.fill="white";
+                eventBubbleMid.style.fill="white";
+                eventBubble2.style.fill="white";
+            }
+            else
+            {
+                eventBubble.style.fill="wheat";
+            }
+
+
+            var preformatedContainer = document.createElement('pre');
+            preformatedContainer.appendChild(document.createTextNode(data));
+            eventBox.appendChild(preformatedContainer);
+            @*notifications.appendChild(document.createElement('hr'));
+            notifications.appendChild(preformatedContainer);*@
+};
+var source = new EventSource('/sse-cti-event');
+
+source.onmessage = function(event) {
+            try {
+                var the_event = JSON.parse(event.data);
+            }
+            catch (e) {
+                console.log(e);
+            }
+            //showEventContent(the_event);
+            showNotification('Received Event:"' + event.type + '" with content:"' + event.data);
+};
+
+source.addEventListener('cti', function(event) {
+            //alert(event.data);
+            try {
+                //showNotification('Received "cti" Event in Json:"' + event.data);
+                console.log('Received Event:"' + event.type + '" with content:"' + event.data);
+                showEvent(event.data);
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+            // alert(event.data);
+});</script>
+</body>
+</html>

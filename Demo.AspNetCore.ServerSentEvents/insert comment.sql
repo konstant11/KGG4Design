@@ -1,0 +1,1 @@
+insert into Comment (CommentId,Title ,Content , SiteId) values (2,'Yak','xaxaxa',2)

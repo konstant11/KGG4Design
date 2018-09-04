@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Demo.AspNetCore.ServerSentEvents.Services.MySqliteDBContext
+@{
+    Layout = null;
+}
+<html>
+<head>
+
+
+</head>
+<body>
+    <h1>SQLite DB access API</h1>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Link</th>
+            <th>Preview</th>
+        </tr>
+        @foreach (var record in Model.WebSites)
+    {
+        var targetName = "Frame" + record.SiteId;
+        var toTargetName = "#Frame" + record.SiteId;
+
+        <tr>
+            <td><b>@record.SiteId</b> </td>
+            <td><a href=@record.Url>@record.Url</a></td>
+            <td><iframe src=@record.Url /></td>
+            <div>
+                <b>@record.SiteId <a href=@record.Url target=@toTargetName>@record.Url</a></b> <iframe id=@record.Url name=@targetName src=@record.Url>
+                    <p>
+                        Your browser does not support ifram
+                    </p>
+                </iframe>
+            </div>
+        </tr>
+
+}
+    </table>
+        </body>
+        </html>

@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Projects";
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="jumbotron text-center" style="min-height:45Px;">
+        <h2>My projects in Genesys</h2>
+        <p>20+ years of experience</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <h3><b><i>2008-2018</i></b> <br /> Agent's Desktop (Interaction Workspace)</h3>
+                <p>
+                    Genesys Enterprise solutions expose Agent's desktop Apprication that
+                    provides interactive acces to company Multimedia environment
+                </p>
+                <p>Desktop is using in both Cloud or on premises solutions</p>
+                <p>
+                    This project's goals is to provide highly customizible, flexibly deployed, centralized configurable,
+                    easy administrable, expandable working desktop, providing wide range of madia access.
+                    It built using .Net framework, Microsoft Unity container for dependency injection, WPF based UI.
+                    Progect includes localization, accessibilities and SDK Api for customization.
+
+                <p />This is long life progect dveloped using Agile metodology , Continuous Integration and Continuous Delivery,
+                Nightly Builds  and Nightly test with Jenkins.
+                <a href="https://docs.genesys.com/Documentation/IW">Genesys Agent's Desktop</a>
+
+
+                </p>
+
+                <iframe src="https://player.vimeo.com/video/93542916" width="320" height="180" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-4">
+                <h3><b><i>2005-2008</i></b> <br />Interaction Concentrator server </h3>
+                <p>
+                    Interaction Concentrator is Genesys core reporting engine designed to store interaction event flow.
+                    Multiplatform Server written on C++ and using followinf databases: SQLite for temporary storage, Oracle, DB2, MS SQL
+                </p>
+                <p>Server collects interaction related information for all medias and stored it in DB.</p>
+                <a href="https://docs.genesys.com/Documentation/ICON">Genesys Interaction Concentrator</a>
+            </div>
+            <div class="col-sm-4">
+                <h3><b><i>before 2005</i></b> <br />Variaty servers and adapters using by Genesys solutions</h3>
+                <p>IVR adapters to Genesys TServers for different telephony switches</p>
+
+            </div>
+        </div>
+    </div>
+    @*<div id="google"></div>
+    <script>$('#google').load('/Notifications/Resume');</script>*@
+</body>
+</html>
