@@ -63,13 +63,12 @@ namespace Demo.AspNetCore.ServerSentEvents
             }
            //app.UseHttpsRedirection();
             app.UseResponseCompression()
-                .MapServerSentEvents("/see-heartbeat")
                 .MapServerSentEvents("/sse-notifications", serviceProvider.GetService<NotificationsServerSentEventsService>())
                .MapServerSentEvents("/sse-cti-event", serviceProvider.GetService<NotificationsServerSentEventsService>())
                 .UseStaticFiles()
                 .UseMvc(routes =>
                 {
-                    routes.MapRoute(name: "default", template: "{controller=Notifications}/{action=sse-notifications-receiver}");
+                    routes.MapRoute(name: "default", template: "{controller=Basic}/{action=Index}");
                 });
         }
         #endregion

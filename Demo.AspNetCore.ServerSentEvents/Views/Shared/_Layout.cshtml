@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - KGG</title>
+    <title>@ViewData["Title"] - K.Gospodinov Intro</title>
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -19,15 +19,16 @@
                position: relative;
                top: -120px;
            }
-        .icon-intro{
-            display:inline-block;
-            border-radius:50%;
-            width:100Px;
-            height:100Px;
-            position:relative;
-            margin-left:10Px;
-            margin-top:10Px;
-           
+        .icon-intro {
+            display: inline-block;
+            border-radius: 25%;
+            width: 50Px;
+            height: 50Px;
+            position: absolute;
+            top:10Px;
+            margin-left: 10Px;
+            margin-top: -10Px;
+            margin-bottom:10Px;
         }
 
     </style>
@@ -35,7 +36,8 @@
 <body>
     <header>
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <img class="icon-intro " src="~/images/MySelf.png" />
+            <div class="container" style="display:inline-block;margin-left:50Px;">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -43,7 +45,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a asp-area="" asp-controller="Notifications" asp-action="Index" class="navbar-brand">Konstantin Gospodinov</a>
+                    <a asp-area="" asp-controller="Basic" asp-action="Index" class="navbar-brand">Konstantin Gospodinov</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -52,47 +54,52 @@
                         <li><a asp-area="" asp-controller="Basic" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Basic" asp-action="Contact">Contact</a></li>
                         <!-- <li><a asp-area="" asp-controller="Basic" asp-action="Geolocation">Google locator</a></li>-->
-                        <li><a asp-area="" asp-controller="Notifications" asp-action="cti-realtime">SSE Watcher</a></li>
-                        <li><a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); ">Send Event</a> </li>
+                        <li><a asp-area="" asp-controller="Notifications" asp-action="cti-realtime">SSE</a></li>
+                        <!--<li><a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); ">Send Event</a> </li>-->
                     </ul>
                     @*@await Html.PartialAsync("_LoginPartial")*@
                 </div>
             </div>
         </div>
     </header>
-    <img class="icon-intro "  src="~/images/MySelf.png" />
-    <div class="container body-content doc-content">
-        @RenderBody()
-        <hr />
-        <footer class="footer">
-            <div class="container">
-                <span class="text-muted">&copy; 2018 - Konstantin Gospodinov.</span>
-            </div>
-        </footer>
-        @*<footer>
-            <p>&copy; 2018 - Konstantin Gospodinov</p>
-        </footer>*@
+    <!-- <img class="icon-intro "  src="~/images/MySelf.png" /> -->
+    <div class="container body-content doc-content" style="margin-top:150Px;">
+    <div class="jumbotron text-center" style="min-height: 45Px;">
+        <h2>@ViewData["Main-Header"]</h2>
+        <p>@ViewData["Header-details"]</p>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+                            @RenderBody()
+                            <hr />
+                            <footer class="footer">
+                                <div class="container">
+                                    <span class="text-muted">&copy; 2018 - Konstantin Gospodinov.</span>
+                                </div>
+                            </footer>
+                            @*<footer>
+                <p>&copy; 2018 - Konstantin Gospodinov</p>
+            </footer>*@
+                        </div>
+
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+                        <!-- Include all compiled plugins (below), or include individual files as needed -->
+                        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
 
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-    @RenderSection("scripts", required: false)
+                        <environment names="Development">
+                            <script src="~/lib/jquery/dist/jquery.js"></script>
+                            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+                            <script src="~/js/site.js" asp-append-version="true"></script>
+                        </environment>
+                        <environment names="Staging,Production">
+                            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                                    asp-fallback-test="window.jQuery"></script>
+                            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+                            <script src="~/js/site.min.js" asp-append-version="true"></script>
+                        </environment>
+                        @RenderSection("scripts", required: false)
 </body>
 </html>

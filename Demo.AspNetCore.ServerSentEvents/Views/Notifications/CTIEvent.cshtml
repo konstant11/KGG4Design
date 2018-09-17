@@ -5,6 +5,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "SSE Viewer";
+    ViewData["Main-Header"] = "Server-Side events";
+    ViewData["Header-details"] = "simple example of server side events usage.";
 
 }
 <!DOCTYPE html>
@@ -15,8 +17,9 @@
     <title>Server-Sent Events (SSE) Notifications Receiver</title>
 </head>
 <body>
-    <h3>Example of processing external events in Json notation</h3>
-    <p /> to send external events select Send Event on navigation bar or <a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); "><b><i>Click Here</i></b> </a>
+    <h3>Example of processing external events</h3>
+    <p /> example shows exteral voice call simulation that exploit sse api to dynamicaly update information on this page.
+    To start simulator - click <a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); "><b><i> Here</i></b> </a>
     <div id="notifications"></div>
     <div id="event-color-ring" style="visibility:hidden;">
         <svg height="140" width="140">
