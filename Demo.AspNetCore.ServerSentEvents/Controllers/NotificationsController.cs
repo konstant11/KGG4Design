@@ -122,14 +122,21 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
             if (ModelState.IsValid)
             {
                 viewModel.CallingDN = viewModel.selectedDN;
-                string[] events = {"EventRinging","EventEstablished","EventHeld","EventResumed","EventReleased" };
+                if (true)
+                {
+                    viewModel.CallingDN = "+1(123)456-7890";
+                    viewModel.Contacts = new List<Contact>() { new Contact() { FullName = "John Smith", PhoneNumber = "+1(123)456-7890", Id = "fbd0001" } };
+                    viewModel.callid = new Guid().ToString();
+                    viewModel.data = "No Data";
+                }
+                string[] events = { "EventRinging", "EventEstablished", "EventHeld", "EventResumed", "EventReleased" };
                 for (int i = 0; i < 5; i++)
                 {
                     viewModel.sequance_id++;
                     viewModel.cti_event = events[i];
                     string ss = JsonConvert.SerializeObject(viewModel);
                     await _notificationsService.SendNotificationAsync(viewModel.cti_event, ss);
-                    await Task.Delay(1000);
+                    await Task.Delay(3000);
                 }
             }
             SSEventModel vm = viewModel;

@@ -17,18 +17,20 @@
 <body>
     <form asp-controller="notifications" asp-action="sse-cti-sender-call" method="post">
         <fieldset>
-            <div>
+         <!--   <div>
                 <select asp-for="selectedDN"
                         asp-items="@(new SelectList(Model.Contacts, "PhoneNumber","FullName"))">
                     <option>Please select contact</option>
                 </select>
             </div>
+             -->
             <div>
-                <input style="background-color: green" type="submit" value="Call" />
+                <input style="background-color: green" type="submit" value="Simulate voice Call" />
             </div>
-
+             
         </fieldset>
     </form>
+    <!--
     <form asp-controller="notifications" asp-action="sse-cti-sender" method="post">
         <fieldset>
             <legend>Call event generator area</legend>
@@ -54,5 +56,6 @@
        </fieldset>
 
     </form>
+        -->
 </body>
 </html>

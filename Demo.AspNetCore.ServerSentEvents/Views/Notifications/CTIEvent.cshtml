@@ -17,25 +17,32 @@
     <title>Server-Sent Events (SSE) Notifications Receiver</title>
 </head>
 <body>
-    <h3>Example of processing external events</h3>
-    <p /> example shows exteral voice call simulation that exploit sse api to dynamicaly update information on this page.
-    To start simulator - click <a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); "><b><i> Here</i></b> </a>
+    <p /> This Page demonstrated my favorite web technology - Server Side Events - using events we can make really asynchronic dynamic web pages that can react to surrounding in real time without sending any requests to server.
+    As an example - this page is listening for particular type of event containing information about external object state. In this case we are simulating voice call in background and web application is sending event sequence related tahat call
+    <p /> to initiate generating sequence of external events there is simple interface allow start simulation.<br />
+    To open control window <a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=10'); "><b><i>Click Here</i></b> </a>
     <div id="notifications"></div>
+    <h5  id="call-text-mid"></h5>
     <div id="event-color-ring" style="visibility:hidden;">
-        <svg height="140" width="140">
-            <ellipse id="call-bubble" cx="70" cy="70" rx="50" ry="50" style="fill:yellow;stroke:purple;stroke-width:2" />
+        <svg height="80" width="80">
+            <ellipse id="call-bubble" cx="40" cy="40" rx="30" ry="30" style="fill:yellow;stroke:purple;stroke-width:2" />
             Sorry, your browser does not support inline SVG.
         </svg>
-        <svg height="140" width="180">
-            <ellipse id="call-bubble-mid" cx="70" cy="70" rx="150" ry="10" style="fill: yellow; " />
-            Sorry, your browser does not support inline SVG.
+        @*<svg height="140" width="180" alignment-baseline="central">
+                    <ellipse id="call-bubble-mid" cx="70" cy="70" rx="150" ry="10" style="fill: yellow; " />
+
+                Sorry, your browser does not support inline SVG.
+            </svg>*@
+        <svg height="80" width="30">
+            <rect id="call-bubble-mid" fill="green" x="0" y="35" width="60" height="10"></rect>
         </svg>
 
-        <svg height="140" width="140">
-            <ellipse id="call-bubble2" cx="70" cy="70" rx="50" ry="50" style="fill: yellow; stroke: purple; stroke-width: 2" />
+        <svg height="80" width="80">
+            <ellipse id="call-bubble2" cx="40" cy="40" rx="30" ry="30" style="fill: yellow; stroke: purple; stroke-width: 2" />
             Sorry, your browser does not support inline SVG.
         </svg>
     </div>
+    <h3>Event content:</h3>
     <div id="cti-event"></div>
     <script>
 var notifications = document.getElementById('notifications');
@@ -43,6 +50,7 @@ var eventBox = document.getElementById('cti-event');
 var eventBubble = document.getElementById('call-bubble');
 var eventBubble2 = document.getElementById('call-bubble2');
 var eventBubbleMid = document.getElementById('call-bubble-mid');
+var eventTextMid = document.getElementById('call-text-mid');
 var eventBubbleContainer = document.getElementById('event-color-ring');
 var showNotification = function(data) {
             var preformatedContainer = document.createElement('pre');
@@ -52,47 +60,56 @@ var showNotification = function(data) {
             notifications.appendChild(preformatedContainer);
 };
 var showEvent = function(data) {
-            eventBox.innerHTML = "";
-            var the_event = JSON.parse(event.data);
-            eventBubbleContainer.style.visibility="visible";
-            if(the_event.cti_event == 'EventRinging')
-            {
-                eventBubble.style.fill="green";
-                eventBubbleMid.style.fill="red";
-                eventBubble2.style.fill="white";
+    eventBox.innerHTML = "";
+    try
+    {
+        var the_event = JSON.parse(event.data);
+        eventBubbleContainer.style.visibility = "visible";
+        eventTextMid.textContent = the_event.cti_event;
+        if (the_event.cti_event == 'EventRinging') {
+            eventBubble.style.fill = "red";
+            eventBubbleMid.style.fill = "white";
+            eventBubble2.style.fill = "grey";
+        }
+        else
+            if (the_event.cti_event == 'EventEstablished') {
+                eventBubble.style.fill = "green";
+                eventBubbleMid.style.fill = "green";
+                eventBubble2.style.fill = "green";
             }
             else
-            if(the_event.cti_event == 'EventEstablished')
-            {
-                eventBubble.style.fill="green";
-                eventBubbleMid.style.fill="grey";
-                eventBubble2.style.fill="green";
-            }
-            else
-            if(the_event.cti_event == 'EventHeld')
-            {
-                eventBubble.style.fill="green";
-                eventBubbleMid.style.fill="red";
-                eventBubble2.style.fill="green";
-            }
-            else
-            if(the_event.cti_event == 'EventReleased')
-            {
-                eventBubble.style.fill="white";
-                eventBubbleMid.style.fill="white";
-                eventBubble2.style.fill="white";
-            }
-            else
-            {
-                eventBubble.style.fill="wheat";
-            }
+                if (the_event.cti_event == 'EventHeld') {
+                    eventBubble.style.fill = "lightgreen";
+                    eventBubbleMid.style.fill = "red";
+                    eventBubble2.style.fill = "green";
+                }
+                else
+                    if (the_event.cti_event == 'EventResumed') {
+                        eventBubble.style.fill = "green";
+                        eventBubbleMid.style.fill = "green";
+                        eventBubble2.style.fill = "green";
+                    }
+                else
+                    if (the_event.cti_event == 'EventReleased') {
+                        eventBubble.style.fill = "white";
+                        eventBubbleMid.style.fill = "white";
+                        eventBubble2.style.fill = "white";
+                        eventBubbleContainer.style.visibility = "hidden";
+                    }
+                    else {
+                        eventBubble.style.fill = "wheat";
+                    }
 
-
+    }
+    catch (ex) { console.log(ex);}
+    if (the_event.cti_event != 'EventReleased')
+    {
             var preformatedContainer = document.createElement('pre');
             preformatedContainer.appendChild(document.createTextNode(data));
             eventBox.appendChild(preformatedContainer);
             @*notifications.appendChild(document.createElement('hr'));
             notifications.appendChild(preformatedContainer);*@
+    }
 };
 var source = new EventSource('/sse-cti-event');
 
@@ -110,7 +127,6 @@ source.onmessage = function(event) {
 source.addEventListener('cti', function(event) {
             //alert(event.data);
             try {
-                //showNotification('Received "cti" Event in Json:"' + event.data);
                 console.log('Received Event:"' + event.type + '" with content:"' + event.data);
                 showEvent(event.data);
             }
