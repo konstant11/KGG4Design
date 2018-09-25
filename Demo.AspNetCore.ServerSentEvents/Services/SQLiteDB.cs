@@ -10,6 +10,7 @@ namespace Demo.AspNetCore.ServerSentEvents.Services
     {
         public DbSet<WebSite> WebSites { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<dbContact> Contacts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,21 +19,12 @@ namespace Demo.AspNetCore.ServerSentEvents.Services
 
         public void InitializeDB()
         {
-            WebSite myWebSite;
+         
             try
             {
-                myWebSite = new WebSite() { SiteId = 5, Url = "Https://gazeta.ru" };
-                WebSites.Add(myWebSite);
-               // SaveChangesAsync();
-                myWebSite = new WebSite() { SiteId = 6, Url = "https://www.utro.ru" };
-                WebSites.Add(myWebSite);
-               // SaveChangesAsync();
-                myWebSite = new WebSite() { SiteId = 7, Url = "https://www.w3schools.com" };
-                WebSites.Add(myWebSite);
-                //SaveChangesAsync();
-                myWebSite = new WebSite() { SiteId = 8, Url = "Https://apple.com" };
-                WebSites.Add(myWebSite);
-                SaveChangesAsync();
+                //this.FillDb(Contacts);
+               
+
             }
             catch (Exception ex)
             {
@@ -60,6 +52,20 @@ namespace Demo.AspNetCore.ServerSentEvents.Services
         public string Content { get; set; }
 
         public int SiteId { get; set; }
+    }
+
+    [Table("Contacts")]
+    public class dbContact
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Full_Name { get; set; }
+        public string Email { get; set; }
+        public string Phone_Number { get; set; }
+        public string Country { get; set; }
+        public string Zip_Code { get; set; }
+        public string Created_At { get; set; }
+        public string Web_Site { get; set; }
     }
 
 }

@@ -15,13 +15,14 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
         public BasicController(MySqliteDBContext sqliteDBContext)
         {
             SqliteDBContext = sqliteDBContext;
-           // SqliteDBContext.InitializeDB();
+            SqliteDBContext.InitializeDB();
         }
         // GET: /<controller>/
         [ActionName("index")]
         [AcceptVerbs("GET")]
         public IActionResult Index()
         {
+
             return View();
         }
         [ActionName("Contact")]
@@ -41,6 +42,12 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
         public IActionResult SQLite()
         {
             return View("SQLite", SqliteDBContext);
+        }
+        [ActionName("ContactsDB")]
+        [AcceptVerbs("GET")]
+        public IActionResult SQLiteContacts()
+        {
+            return View("SQLiteContacts", SqliteDBContext);
         }
         [ActionName("Geolocation")]
         [AcceptVerbs("GET")]

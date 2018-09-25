@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Demo.AspNetCore.ServerSentEvents.Services.MySqliteDBContext
+@{
+    ViewData["Title"] = "SQLite DB API";
+    ViewData["Main-Header"] = "SQLite DB access API simple view";
+    ViewData["Header-details"] = "plain list of single table";
+
+}
+<html>
+<head>
+
+</head>
+<body>
+    <h1></h1>
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <th>Country</th>
+            <th>Zip Code</th>
+        </tr>
+        @foreach (var record in Model.Contacts)
+        {
+
+            <tr>
+                <td><b>@record.Full_Name</b> </td>
+                <td><b>@record.Country</b></td>
+                <td><b>@record.Zip_Code</b></td>
+            </tr>
+
+        }
+    </table>
+</body>
+</html>

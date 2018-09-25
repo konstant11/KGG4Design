@@ -14,7 +14,7 @@ namespace Demo.AspNetCore.ServerSentEvents
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                   .UseUrls("http://localhost:5000","https://localhost:5001", "http://0.0.0.0:5000", "https://0.0.0.0:5001")
+                   .UseUrls("http://localhost:5000", "http://0.0.0.0:5000")
                    .UseStartup<Startup>();
     }
 }
