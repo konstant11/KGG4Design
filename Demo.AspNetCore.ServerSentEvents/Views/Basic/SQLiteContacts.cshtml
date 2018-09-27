@@ -13,12 +13,38 @@
 
 </head>
 <body>
+    <script>
+    var name_changged = function()
+    {
+        update_table("Name");
+    };
+    function country_changged()
+    {
+        update_table("Country");
+    };
+    function zip_changged()
+    {
+        update_table("Zip");
+    };
+    function updateTable(data)
+    {
+        console.log("Updating field"+data);
+               $.ajax({url: "Basic/searchDB", success: function(result){
+                        $('#'+data).html(result);
+                    }});
+                });
+
+
+    };
+
+    </script>
+
     <h1></h1>
-    <table>
+    <table width="100%">
         <tr>
-            <th>Full Name</th>
-            <th>Country</th>
-            <th>Zip Code</th>
+            <th>Name<input type="text" id="name-field" onkeypress="name_changed()" rows="1" style="min-height:1Px;"> </th>
+            <th>Country<input type="text" id="country-field" onkeyup="country_changed()" rows="1" style="min-height:1Px"></th>
+            <th>Zip Code<input type="text" id="zip-field" onkeyup="zip_changed()" rows="1" style="min-height:1Px"></th>
         </tr>
         @foreach (var record in Model.Contacts)
         {
@@ -33,3 +59,4 @@
     </table>
 </body>
 </html>
+
