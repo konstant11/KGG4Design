@@ -3,7 +3,7 @@
 *@
 @model Demo.AspNetCore.ServerSentEvents.Services.MySqliteDBContext
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layoutdev.cshtml";
 }
 <html>
 <head>
@@ -12,31 +12,31 @@
 </head>
 <body>
     <h1>SQLite DB access API</h1>
-    <table>
+    <table style="width:100%">
         <tr>
-            <th>Id</th>
-            <th>Link</th>
-            <th>Preview</th>
+            <th style="width:10%;">Id</th>
+            <th style="width:30%;">Link</th>
+            <th style="width:60%;">Preview</th>
         </tr>
         @foreach (var record in Model.WebSites)
-    {
-        var targetName = "Frame" + record.SiteId;
-        var toTargetName = "#Frame" + record.SiteId;
+        {
+            var targetName = "Frame" + record.SiteId;
+            var toTargetName = "#Frame" + record.SiteId;
 
-        <tr>
-            <td><b>@record.SiteId</b> </td>
-            <td><a href=@record.Url>@record.Url</a></td>
-            <td><iframe src=@record.Url /></td>
-            <div>
-                <b>@record.SiteId <a href=@record.Url target=@toTargetName>@record.Url</a></b> <iframe id=@record.Url name=@targetName src=@record.Url>
-                    <p>
-                        Your browser does not support ifram
-                    </p>
-                </iframe>
-            </div>
-        </tr>
+            <tr>
+                <td><b>@record.SiteId</b> </td>
+                <td><a href=@record.Url>@record.Url</a></td>
+                <td><iframe src=@record.Url /></td>
+                <div>
+                    <b>@record.SiteId <a href=@record.Url target=@toTargetName>@record.Url</a></b> <iframe style="width:100%;" allowfullscreen id=@record.Url name=@targetName src=@record.Url>
+                        <p>
+                            Your browser does not support ifram
+                        </p>
+                    </iframe>
+                </div>
+            </tr>
 
-}
+        }
     </table>
-        </body>
-        </html>
+</body>
+</html>

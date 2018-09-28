@@ -3,6 +3,7 @@
 *@
 @model Demo.AspNetCore.ServerSentEvents.Services.MySqliteDBContext
 @{
+    Layout = "~/Views/Shared/_Layoutdev.cshtml";
     ViewData["Title"] = "SQLite DB API";
     ViewData["Main-Header"] = "SQLite DB access API simple view";
     ViewData["Header-details"] = "plain list of single table";
@@ -40,7 +41,7 @@
     </script>
 
     <h1></h1>
-    <table width="100%">
+    <table style="width:100%">
         <tr>
             <th>Name<input type="text" id="name-field" onkeypress="name_changed()" rows="1" style="min-height:1Px;"> </th>
             <th>Country<input type="text" id="country-field" onkeyup="country_changed()" rows="1" style="min-height:1Px"></th>
