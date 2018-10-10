@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Demo.AspNetCore.ServerSentEvents.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -47,8 +49,26 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
         [AcceptVerbs("GET")]
         public IActionResult SQLiteContacts()
         {
+            SqliteDBContext.searchCriteria.Full_Name = "";
             return View("SQLiteContacts", SqliteDBContext);
         }
+
+        [ActionName("searchDB")]
+        [AcceptVerbs("POST")]
+        public IActionResult SearchDB()
+        {
+            Stream req = Request.Body;
+            //req.Seek(0, System.IO.SeekOrigin.Begin);
+            string json = new StreamReader(req).ReadToEnd();
+            dbContact criteria = JsonConvert.DeserializeObject<dbContact>(json);
+            SqliteDBContext.DoSearchQuery(criteria);
+            SqliteDBContext.IsFilteredBySearch = true;
+            SqliteDBContext.searchCriteria = criteria;
+            return View("SQLiteContacts", SqliteDBContext);
+        }
+
+
+
         [ActionName("Geolocation")]
         [AcceptVerbs("GET")]
         public IActionResult GeoLocation()

@@ -3,7 +3,10 @@
 *@
 @model Demo.AspNetCore.ServerSentEvents.Services.MySqliteDBContext
 @{
-    Layout = "~/Views/Shared/_Layoutdev.cshtml";
+    if (Model.IsFilteredBySearch)
+    { Layout = null; }
+    else
+    { Layout = "~/Views/Shared/_Layoutdev.cshtml"; }
     ViewData["Title"] = "SQLite DB API";
     ViewData["Main-Header"] = "SQLite DB access API simple view";
     ViewData["Header-details"] = "plain list of single table";
@@ -11,43 +14,38 @@
 }
 <html>
 <head>
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-</head>
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+
+ </head>
 <body>
-    <script>
-    var name_changged = function()
-    {
-        update_table("Name");
-    };
-    function country_changged()
-    {
-        update_table("Country");
-    };
-    function zip_changged()
-    {
-        update_table("Zip");
-    };
-    function updateTable(data)
-    {
-        console.log("Updating field"+data);
-               $.ajax({url: "Basic/searchDB", success: function(result){
-                        $('#'+data).html(result);
-                    }});
-                });
-
-
-    };
-
-    </script>
 
     <h1></h1>
     <table style="width:100%">
-        <tr>
-            <th>Name<input type="text" id="name-field" onkeypress="name_changed()" rows="1" style="min-height:1Px;"> </th>
-            <th>Country<input type="text" id="country-field" onkeyup="country_changed()" rows="1" style="min-height:1Px"></th>
-            <th>Zip Code<input type="text" id="zip-field" onkeyup="zip_changed()" rows="1" style="min-height:1Px"></th>
+        <tr style="border:solid;">
+            <th>Name @Html.TextBoxFor(m => m.searchCriteria.Full_Name, new { @id="input-full-name", onfocus="Focus(this.id,'User ID')", @style = "min-height:1Px;", @value = Model.searchCriteria.Full_Name }) </th>
+            <th>Country @Html.TextBoxFor(m => m.searchCriteria.Country, new { @id="country-field", @style = "min-height:1Px;", @value = Model.searchCriteria.Country }) </th>
+            <th>Zip Code @Html.TextBoxFor(m => m.searchCriteria.Zip_Code, new { @id="zip-field", @style = "min-height:1Px;", @value = Model.searchCriteria.Zip_Code }) </th>
         </tr>
-        @foreach (var record in Model.Contacts)
+        @foreach (var record in Model.ContactPresentation)
         {
 
             <tr>
@@ -57,7 +55,67 @@
             </tr>
 
         }
+
     </table>
+        <form id="fake" action="/Basic/ContactsDB"></form>
+    <script>
+    $(document).ready(function()
+    {
+         var content = $('#input-full-name').val();
+         var lock = true;
+         var timer = null;
+        $('#input-full-name').keyup(function()
+        {
+            if ($('#input-full-name').val() != content)
+            {
+                if(timer != null)
+                    clearTimeout(timer);
+                timer = setTimeout(function()
+                        {
+                            console.log('Content has been changed');
+        var Model = {
+
+                        Full_Name: $('#input-full-name').val(),
+                        Country:  $('#country-field').val(),
+                        Zip_Code:  $('#zip-field').val()
+                    }
+
+
+         var StringifiedData = JSON.stringify(Model);
+
+
+        //var json1 = JSON.stringify({name :  $('#input-full-name').val(), zip : $('#zip-field').val()});
+    @*$('#fake').submit(function(e) {
+      e.preventDefault();
+      e.returnValue = false;
+
+      var Full_Name = $('#input-full-name').val();
+      var Country = $('#country-field').val();
+      var Zip_Code = $('#zip-field').val();
+   });*@
+
+         $.ajax({
+                    type: "POST",
+                    //dataType: "json",
+                    data:StringifiedData,
+                    url: '@Url.Action("searchDB", "Basic")',
+                    contentType: "application/json; charset=utf-8",
+                    error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError); 
+                        },
+
+                    success: function(result){
+                      console.log("good");
+                    var doc = 
+                    $('#content-body').html(result);
+                var foot = $("footer");
+                }});
+
+                        }, 1000);
+
+            }
+        });
+    });
+    </script>
 </body>
 </html>
 
