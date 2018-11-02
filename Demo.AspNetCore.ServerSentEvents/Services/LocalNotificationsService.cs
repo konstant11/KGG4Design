@@ -15,9 +15,9 @@ namespace Demo.AspNetCore.ServerSentEvents.Services
         {
             return SendSseEventAsync(notification, alert);
         }
-        public Task SendNotificationAsync(string notification, string b )
+        public Task SendNotificationAsync(string eventType, string b )
         {
-            return SendSseEventAsync(notification, b);
+            return SendSseEventAsync(eventType, b);
         }
         #endregion
     }

@@ -69,7 +69,7 @@ namespace Demo.Controllers
                     _testOutputHelper.WriteLine("Check total records...");
                     int numbers = ((MySqliteDBContext)vr.Model).ContactPresentation.Count;
                     _testOutputHelper.WriteLine("Test returns Database with {0} contacts", numbers);
-                    Assert.True(numbers == 10, "check todal number of db records in table 'Contacts' after search for 'ab'");
+                    Assert.True(numbers == 23  , "check todal number of db records in table 'Contacts' after search for 'ab'");
                 }
 
         }

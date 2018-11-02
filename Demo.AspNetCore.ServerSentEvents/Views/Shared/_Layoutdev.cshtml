@@ -26,6 +26,13 @@
             margin-right:10Px;
             margin-bottom:10Px;
         }
+        .content-body-style {
+            margin-top: 20Px;
+            margin-left: 10Px;
+            margin-right: 10Px;
+            margin-bottom: 20Px;
+            width:100%;
+         }
 
     </style>
 </head>
@@ -47,9 +54,9 @@
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Basic" asp-action="ContactsDB">Contacts in Database</a></li>
                         <li><a asp-area="" asp-controller="Basic" asp-action="SQLiteDBAccess">DataBase tables access</a></li>
-                        <li><a asp-area="" asp-controller="Basic" asp-action="About">About</a></li>
-                        <li><a asp-area="" asp-controller="Basic" asp-action="Contact">Contact</a></li>
-                        <!-- <li><a asp-area="" asp-controller="Basic" asp-action="Geolocation">Google locator</a></li>
+                        <li><a asp-area="" asp-controller="Notifications" asp-action="cti-realtime">SSE</a></li>
+                        <li><a asp-area="" asp-controller="Chat" asp-action="chat-session">Chat Room</a></li>
+                        <!--<li><a asp-area="" asp-controller="Basic" asp-action="Geolocation">Google locator</a></li>
     <li><a asp-area="" asp-controller="Notifications" asp-action="cti-realtime">SSE</a></li>-->
                         <!--<li><a href="#" onClick="MyWindow=window.open('/Notifications/sse-cti-sender','SendEvent','width=400,height=310'); ">Send Event</a> </li>-->
                     </ul>
@@ -59,11 +66,11 @@
         </div>
     </header>
     <!-- <img class="icon-intro "  src="~/images/MySelf.png" /> -->
-    <div id="content-body" style="margin-top:20Px;margin-left:10Px;margin-right:10Px;margin-bottom:20Px;">
+    <div id="content-body" class="content-body-style">
                             @RenderBody()
         </div>
                             <hr />
-                            <footer class="footer">
+                            <footer class="footer" style="float:left;">
                                 <div class="container">
                                     <span class="text-muted">&copy; 2018 - Konstantin Gospodinov.</span>
                                 </div>

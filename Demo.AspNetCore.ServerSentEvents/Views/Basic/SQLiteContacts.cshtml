@@ -32,6 +32,37 @@
         th {
             background-color: #f2f2f2;
         }
+        tr:hover {
+            background-color: gray;
+            cursor: pointer;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                /* Change color of dropdown links on hover */
+                .dropdown-content a:hover {
+                    background-color: #ddd
+                }
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {
+            display: block;
+        }
+
     </style>
 
 
@@ -39,83 +70,234 @@
 <body>
 
     <h1></h1>
-    <table style="width:100%">
+    <table class="table" style="width:100%">
         <tr style="border:solid;">
-            <th>Name @Html.TextBoxFor(m => m.searchCriteria.Full_Name, new { @id="input-full-name", onfocus="Focus(this.id,'User ID')", @style = "min-height:1Px;", @value = Model.searchCriteria.Full_Name }) </th>
-            <th>Country @Html.TextBoxFor(m => m.searchCriteria.Country, new { @id="country-field", @style = "min-height:1Px;", @value = Model.searchCriteria.Country }) </th>
-            <th>Zip Code @Html.TextBoxFor(m => m.searchCriteria.Zip_Code, new { @id="zip-field", @style = "min-height:1Px;", @value = Model.searchCriteria.Zip_Code }) </th>
-        </tr>
+            <th style="width:10%;">
+            </th>
+            <th>Name @Html.TextBoxFor(m => m.searchCriteria.Full_Name, new { @id="input-full-name", onfocus="Focus(this.id,'User ID')", @style = "min-height:1Px;", autocomplete="off", @value = Model.searchCriteria.Full_Name }) 
+             </th>
+            <th>Country @Html.TextBoxFor(m => m.searchCriteria.Country, new { @id="country-field", @style = "min-height:1Px;",autocomplete="off", @value = Model.searchCriteria.Country }) </th>
+            <th>Zip Code @Html.TextBoxFor(m => m.searchCriteria.Zip_Code, new { @id="zip-field", @style = "min-height:1Px;", autocomplete="off", @value = Model.searchCriteria.Zip_Code })
+            </th>
+            <th>
+                <div id="new-contact" style="cursor: pointer;">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </div>
+
+            </th>
+
+       </tr>
         @foreach (var record in Model.ContactPresentation)
         {
 
-            <tr>
-                <td><b>@record.Full_Name</b> </td>
-                <td><b>@record.Country</b></td>
-                <td><b>@record.Zip_Code</b></td>
-            </tr>
+        <tr id="contact-record">
+            <td><img src="@record.Avatar" width="35" height="35"/></td>
+            <td id="td-full-name">
+                <b>@record.Full_Name</b>
+                <div id="myDropdown" class="dropdown-content">
+                    <a class="dd" href="#" onclick="sendEditRequest(@record.Id)">Edit Record # @record.Id</a>
+                    <a class="dd" href="/Contact/delete-contact"  onclick="sendDeleteRequest(@record.Id)">Delete Contact  # @record.Id</a>
+                    <a class="dd" onclick="clearDropDowns()" href="#">Cancel</a>
+                </div>
+            </td>
+            <td><b>@record.Country</b></td>
+            <td><b>@record.Zip_Code</b></td>
+            <td data-id="@record.Id" id="recordId" class="display:none;"></td>
+        </tr>
 
         }
 
     </table>
         <form id="fake" action="/Basic/ContactsDB"></form>
-    <script>
+        <script>
+
+    var focused;
     $(document).ready(function()
     {
-         var content = $('#input-full-name').val();
+         var namecontent = $('#input-full-name').val();
+         var countrycontent = $('#country-field').val();
+         var zipcontent = $('#zip-field').val();
          var lock = true;
          var timer = null;
         $('#input-full-name').keyup(function()
         {
-            if ($('#input-full-name').val() != content)
+            if ($('#input-full-name').val() != namecontent)
             {
+                namecontent = $('#input-full-name').val()
+                focused = "#input-full-name";
                 if(timer != null)
                     clearTimeout(timer);
-                timer = setTimeout(function()
-                        {
-                            console.log('Content has been changed');
-        var Model = {
-
-                        Full_Name: $('#input-full-name').val(),
-                        Country:  $('#country-field').val(),
-                        Zip_Code:  $('#zip-field').val()
-                    }
-
-
-         var StringifiedData = JSON.stringify(Model);
-
-
-        //var json1 = JSON.stringify({name :  $('#input-full-name').val(), zip : $('#zip-field').val()});
-    @*$('#fake').submit(function(e) {
-      e.preventDefault();
-      e.returnValue = false;
-
-      var Full_Name = $('#input-full-name').val();
-      var Country = $('#country-field').val();
-      var Zip_Code = $('#zip-field').val();
-   });*@
-
-         $.ajax({
-                    type: "POST",
-                    //dataType: "json",
-                    data:StringifiedData,
-                    url: '@Url.Action("searchDB", "Basic")',
-                    contentType: "application/json; charset=utf-8",
-                    error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError); 
-                        },
-
-                    success: function(result){
-                      console.log("good");
-                    var doc = 
-                    $('#content-body').html(result);
-                var foot = $("footer");
-                }});
-
-                        }, 1000);
+                timer = setTimeout(updatecontent, 1000);
 
             }
+       });
+        $('#country-field').keyup(function()
+        {
+            if ($('#country-field').val() != countrycontent)
+            {
+                countrycontent = $('#country-field').val();
+                focused = "#country-field";
+                if(timer != null)
+                    clearTimeout(timer);
+                timer = setTimeout(updatecontent, 1000);
+
+            }
+       });
+
+        $('#zip-field').keyup(function()
+        {
+            if ($('#zip-field').val() != zipcontent)
+            {
+                zipcontent = $('#zip-field').val();
+                focused = "#zip-field";
+                if(timer != null)
+                    clearTimeout(timer);
+                timer = setTimeout(updatecontent, 1000);
+
+            }
+       });
+
+        $('.table').on('dblclick', 'tr>td', function() {
+            var theRow = jQuery("#recordId", this.parentElement);
+            var theName = jQuery("#td-full-name", this.parentElement);
+            //alert('record id is: '+ theRow.attr("data-id"));
+            clearDropDowns();
+            dropDownMenu(theName);
         });
-    });
-    </script>
+        $('#new-contact').click(function()
+        {
+            console.log('New Contact request');
+            var Model = {
+
+                            Full_Name: $('#input-full-name').val(),
+                            Country:  $('#country-field').val(),
+                            Zip_Code:  $('#zip-field').val()
+                        }
+             var StringifiedData = JSON.stringify(Model);
+               $.ajax({
+                type: "POST",
+                data:StringifiedData,
+                url: "/Basic/AddContact",
+                contentType: "application/json; charset=utf-8",
+                error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError);
+                    },
+
+                success: function(result){
+                  console.log("good");
+                var doc = $('#content-body').html(result);
+            }});
+
+
+
+        });
+  });
+
+
+        var updatecontent = function()
+                        {
+                            console.log('Content has been changed');
+                            var Model = {
+
+                                            Full_Name: $('#input-full-name').val(),
+                                            Country:  $('#country-field').val(),
+                                            Zip_Code:  $('#zip-field').val()
+                                        }
+
+
+                                var StringifiedData = JSON.stringify(Model);
+
+
+                                    var foc = $(document.activeElement).id;
+                                    console.log('Focus on '+foc);
+                                 $.ajax({
+                                            type: "POST",
+                                            //dataType: "json",
+                                            data:StringifiedData,
+                                            url: "/Basic/searchDB",
+                                            contentType: "application/json; charset=utf-8",
+                                            error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError);
+                                                },
+
+                                            success: function(result){
+                                              console.log("good");
+                                            var doc =
+                                            $('#content-body').html(result);
+                                            $(focused).focus();
+                                        var foot = $("footer");
+                                        }});
+
+                        };
+
+
+            function dropDownMenu(elt) {
+                var ddown =  elt.children("#myDropdown");
+                ddown.attr("class", function(i, origValue){
+                        return origValue + " show";
+                    });
+                };
+
+                // Close the dropdown menu if the user clicks outside of it
+                var clearDropDowns = function() {
+
+
+                   var dropdowns = document.getElementsByClassName("dropdown-content");
+                   var i;
+                   for (i = 0; i < dropdowns.length; i++) {
+                      var openDropdown = dropdowns[i];
+                     if (openDropdown.classList.contains('show')) {
+                       openDropdown.classList.remove('show');
+                      }
+                    }
+
+                };
+
+            function sendEditRequest(id)
+            {
+                console.log('Content edit record sent'+ id);
+                var Model = {
+                                Id: id
+                            }
+
+                            var StringifiedData = JSON.stringify(Model);
+                            $.ajax({
+                            type: "POST",
+                            data:StringifiedData,
+                            url: "/Contact/show-page-edit-contact",
+                            contentType: "application/json; charset=utf-8",
+                            error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError);
+                                },
+
+                            success: function(result){
+                              console.log("good");
+                             $('#content-body').html(result);
+                        }});
+            };
+
+            function sendDeleteRequest(id)
+            {
+                console.log('Content delete record sent'+ id);
+                var Model = {
+                                Id: id
+                            }
+
+                            var StringifiedData = JSON.stringify(Model);
+                            $.ajax({
+                            type: "POST",
+                            data:StringifiedData,
+                            url: "/Contact/delete-contact",
+                            contentType: "application/json; charset=utf-8",
+                            error: function(xhr, textStatus, thrownError) { console.log("ERROR: "+ textStatus + "-" + thrownError);
+                                },
+
+                            success: function(result){
+                              console.log("done");
+                             $('#content-body').html(result);
+                        }});
+            };
+
+        </script>
+
+
 </body>
 </html>
 

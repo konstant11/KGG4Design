@@ -28,11 +28,11 @@ namespace Demo.AspNetCore.ServerSentEvents.Services
             });
         }
 
-        protected Task SendSseEventAsync(string cti_event, string  jsonContent)
+        protected Task SendSseEventAsync(string eventType, string  jsonContent)
         {
             return _notificationsServerSentEventsService.SendEventAsync(new ServerSentEvent
             {
-                Type = "cti",
+                Type = eventType,
                 //Data = new List<string>(new string[] { string.Format("cti-event: {0}",  cti_event ),jsonContent });
                 Data = new List<string>(new string[] { jsonContent })
                // Data = new List<string>(notification.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None))

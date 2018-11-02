@@ -45,11 +45,12 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
         {
             return View("SQLite", SqliteDBContext);
         }
+
         [ActionName("ContactsDB")]
         [AcceptVerbs("GET")]
         public IActionResult SQLiteContacts()
         {
-            SqliteDBContext.searchCriteria.Full_Name = "";
+             SqliteDBContext.searchCriteria.Full_Name = "";
             return View("SQLiteContacts", SqliteDBContext);
         }
 
@@ -67,7 +68,41 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
             return View("SQLiteContacts", SqliteDBContext);
         }
 
+        [ActionName("AddContact")]
+        [AcceptVerbs("POST")]
+        public IActionResult AddContact(MySqliteDBContext context)
+        {
+            Stream req = Request.Body;
+            //req.Seek(0, System.IO.SeekOrigin.Begin);
+            string json = new StreamReader(req).ReadToEnd();
+            dbContact criteria = JsonConvert.DeserializeObject<dbContact>(json);
+            SqliteDBContext.searchCriteria = criteria;
+            //return View("SQLiteNewContacts", SqliteDBContext);
+            dbContact cnt = SqliteDBContext.searchCriteria;
+            return View("SQLiteNewContacts", cnt);
+        }
 
+        [ActionName("register-contact")]
+        [AcceptVerbs("POST")]
+        public IActionResult RegisterContact(dbContact cnt)
+        {
+            MySqliteDBContext context = new MySqliteDBContext(); 
+            SqliteDBContext.AddContactRecord(cnt);
+            context.searchCriteria = cnt;
+            return View("SQLiteContacts", SqliteDBContext);
+        }
+
+        //[ActionName("AddContact")]
+        //[AcceptVerbs("Get")]
+        //public IActionResult AddContact()
+        //{
+        //    Stream req = Request.Body;
+        //    //req.Seek(0, System.IO.SeekOrigin.Begin);
+        //    string json = new StreamReader(req).ReadToEnd();
+        //    dbContact criteria = JsonConvert.DeserializeObject<dbContact>(json);
+        //    SqliteDBContext.searchCriteria = criteria;
+        //    return View("SQLiteNewContacts", SqliteDBContext);
+        //}
 
         [ActionName("Geolocation")]
         [AcceptVerbs("GET")]

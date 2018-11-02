@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Demo.AspNetCore.ServerSentEvents.Services.dbContact
+@{
+    Layout = "~/Views/Shared/_Layoutdev.cshtml"; 
+    ViewData["Title"] = "NewContact";
+    ViewData["Main-Header"] = "Add new contact";
+    ViewData["Header-details"] = "";
+
+}
+<body>
+    <form action="/Basic/register-contact" method="post">
+        <!--  <div class="form-group"> -->
+        @Html.EditorFor(m => m)
+        <div>
+            <input id="Avatar" type='file' onchange="readURL(this);" />
+            <img id="icon" src="#" alt="your avatar" />
+        </div>
+
+        <!--        <label for="Full_Name">Full name</label>
+        <input type="text" class="form-control" id="Full_Name" placeholder="Enter Your Name">
+    </div>
+    <div class="form-group">
+        <label for="Email">Email address</label>
+        <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+        <label for="Phone_Number">Phone number</label>
+        <input type="text" class="form-control" id="Phone_Number" aria-describedby="phoneHelp" placeholder="Phone Number">
+     </div>
+    <div class="form-group">
+        <label for="Zip_Code">ZIP Code</label>
+        <input type="text" class="form-control" id="Zip_Code" placeholder="ZIP code">
+    </div>
+    <div class="form-group">
+        <label for="Country">Country</label>
+        <input type="text" class="form-control" id="Zip_Code" placeholder="your Country">
+    </div>
+    <div class="form-group">
+        <label for="Avatar">Upload avatar picture</label>
+        <input type="file" class="filestyle" data-icon="false">
+    </div>
+    -->
+        <button type="submit" class="btn btn-light">Register</button>
+    </form>
+    <script>
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(45)
+                    .height(45);
+                $('#Avatar').val(e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    </script>
+</body>

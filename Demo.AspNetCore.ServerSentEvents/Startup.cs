@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Lib.AspNetCore.ServerSentEvents;
 using Demo.AspNetCore.ServerSentEvents.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Owin;
+using Owin;
+using Demo.AspNetCore.ServerSentEvents.Services.Bots;
 
 namespace Demo.AspNetCore.ServerSentEvents
 {
@@ -39,9 +42,11 @@ namespace Demo.AspNetCore.ServerSentEvents
             services.AddServerSentEvents();
             services.AddSingleton<IHostedService, HeartbeatService>();
             services.AddDbContext<MySqliteDBContext>();
-
+            services.AddSingleton<IChatService, ChatService>();
+            services.AddSingleton<IChatRoomService ,ChatRoomService>();
+            services.AddSingleton<IChatBot, ChatBot>();
             //services.AddDbContext<MySqliteDBContext>(options =>
-             //                                        options.UseSqlite("Data Source=MySqliteDB.db"));
+            //                                        options.UseSqlite("Data Source=MySqliteDB.db"));
 
             services.AddServerSentEvents<INotificationsServerSentEventsService, NotificationsServerSentEventsService>();
             services.AddNotificationsService(Configuration);
@@ -57,16 +62,19 @@ namespace Demo.AspNetCore.ServerSentEvents
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            IAppBuilder appb = serviceProvider.GetService<IAppBuilder>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-           //app.UseHttpsRedirection();
+            //.UseHttpsRedirection();
             app.UseResponseCompression()
                 .MapServerSentEvents("/sse-notifications", serviceProvider.GetService<NotificationsServerSentEventsService>())
-               .MapServerSentEvents("/sse-cti-event", serviceProvider.GetService<NotificationsServerSentEventsService>())
-                .UseStaticFiles()
-                .UseMvc(routes =>
+                .MapServerSentEvents("/sse-cti-event", serviceProvider.GetService<NotificationsServerSentEventsService>())
+                .UseStaticFiles();
+
+                //appb.MapSignalR();
+                app.UseMvc(routes =>
                 {
                     routes.MapRoute(name: "default", template: "{controller=Basic}/{action=Index}");
                 });

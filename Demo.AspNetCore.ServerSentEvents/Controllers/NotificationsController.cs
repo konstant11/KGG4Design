@@ -100,7 +100,7 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
                     }
                     viewModel.sequance_id++;
                     string ss = JsonConvert.SerializeObject(viewModel);
-                    await _notificationsService.SendNotificationAsync(viewModel.cti_event, ss);
+                    await _notificationsService.SendNotificationAsync("cti", ss);
                 }
             }
             SSEventModel vm = viewModel;
@@ -135,7 +135,7 @@ namespace Demo.AspNetCore.ServerSentEvents.Controllers
                     viewModel.sequance_id++;
                     viewModel.cti_event = events[i];
                     string ss = JsonConvert.SerializeObject(viewModel);
-                    await _notificationsService.SendNotificationAsync(viewModel.cti_event, ss);
+                    await _notificationsService.SendNotificationAsync("cti", ss);
                     await Task.Delay(3000);
                 }
             }
